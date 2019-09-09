@@ -4,7 +4,7 @@ package Homework1;
 import java.util.Arrays;
 
 /**
- * @author Junjian Zhu
+ * @author Junjian Zhu R05
  *    e-mail: junjian.zhu@Stonybrook.edu
  *    Stony Brook ID: 111384808
  **/
@@ -80,18 +80,12 @@ public class Applicant {
 
     @Override
     public String toString() {
+
         return "Applicant Name:" +applicantName +"\n"+
-                "Company Name:" + (companyName == null ? null : Arrays.asList(companyName)) +
+                "Company Name:" + getCompanyName()[0]+" "+getCompanyName()[1]+" "+getCompanyName()[2]+
                 "\n" +
                 "GPA: " + GPA +"\n"+
                 "College: " + College + "\n" +
-                "Skills: " + (skills == null ? null : Arrays.asList(skills));
-    }
-    public String toString1(){
-        return  "%-25s"+applicantName +
-                "%-30s" + (companyName == null ? null : Arrays.asList(companyName)) +
-                "%-28s" + GPA +
-                "%-30s" + College +
-                "%-30s" + (skills == null ? null : Arrays.asList(skills));
+                "Skills: " + getSkills()[0]+" "+getSkills()[1]+" "+getSkills()[2];
     }
 }

@@ -5,30 +5,36 @@ import java.util.Scanner;
 
 
 /**
- * @author Junjian Zhu
+ * @author Junjian Zhu R05
  *    e-mail: junjian.zhu@Stonybrook.edu
  *    Stony Brook ID: 111384808
  **/
 
 public class HiringSystem {
     public static void main(String[] args){
-        HiringTable table = new HiringTable();          //Main hiring system
         Scanner in = new Scanner(System.in);
-        HiringTable newTable = new HiringTable();       //Backup hiring system
-        HiringTable tempTable = new HiringTable();
-        HiringTable app1= new HiringTable();//Temporary hiring system when reverting
-        boolean status = true;
+        HiringTable table = new HiringTable();          //Main hiring system
+        HiringTable tempTable = new HiringTable();//Temporary hiring system when reverting
+        HiringTable backupTable= new HiringTable();//Backup hiring system when reverting
+        boolean status = true;                     //Control when to quit the system
         while(status) {
+            /**
+             * print main menu
+             */
             System.out.println();
         System.out.println("(A)   Add Applicant"+"\n"+
         "(R)   Remove Applicant\n"+"(G)   Get Applicant\n"
         +"(P)   Print List\n"+"(RS)  Refine Search\n"+"(S)   Size\n"+
         "(B)   Backup\n"+"(CB)  Compare Backup\n"+"(RB)  Revert Backup\n"+
                 "(Q)   Quit");
-        System.out.println("Please Enter a Command: ");
-        // Create the First menu.
+        System.out.println();
+        System.out.println("Please Enter a Command: ");                           // Create the First menu.
             String command = in.nextLine();
             boolean validInput = false;
+
+            /**
+             * Set status equals false to terminate hiringsystem.
+             */
             if (command.equalsIgnoreCase("Q")) {
             System.out.println("Quitting program. . .");
             try {
@@ -37,6 +43,9 @@ public class HiringSystem {
                 status = false;
             }
 
+            /**
+             * Add Applicant option
+             */
 
             if (command.equalsIgnoreCase("A")) {
                 Applicant tempa = new Applicant();
@@ -187,11 +196,15 @@ public class HiringSystem {
                 }
 
             }
-
+            /**
+             * print the current main hiring system
+             */
             if(command.equalsIgnoreCase("P")){
                 table.printApplicantTable();
             }
-
+            /**
+             * by letting user input several criteria and locate the applicants that can fits in all the criterias.
+             */
             if(command.equalsIgnoreCase("RS")){
                 System.out.println("Enter a comapny to filter for:");
                 String company = in.nextLine();
@@ -226,6 +239,9 @@ public class HiringSystem {
                 System.out.println("There are "+size+" applicants in the hiring system.");
             }
 
+            /**
+             * create a back up hiringtable
+             */
             if(command.equalsIgnoreCase("B")){
 //            try{
 //                newTable = (HiringTable)table.clone();
@@ -233,25 +249,54 @@ public class HiringSystem {
 //            }catch(CloneNotSupportedException c){
 //                System.out.println("Backup failed.");
 //            }
-                try {
-                    for (int i = 0; i < table.size(); i++) {
-                        app1.addApplicant(table.getloc(i));
-                        System.out.println("Backup Successful!");
-                    }
-                }catch (FullTableException e){
-                    System.out.println("Backup unsuccessful");
+                try{
+                    HiringTable newtable = (HiringTable)table.clone();      //Backup hiring system
+                    System.out.println("Backup Successful!");
+                    backupTable = newtable;
                 }
+                catch(CloneNotSupportedException e){
+                    System.out.println("Backup Unsuccessful");
+                }
+
+                //                try {
+                //                    for (int i = 0; i < table.size(); i++) {
+                //                        app1.addApplicant(table.getloc(i));
+                //                        System.out.println("Backup Successful!");
+                //                    }
+                //                }catch (FullTableException e){
+                //                    System.out.println("Backup unsuccessful");
+                //                }
             }
 
+            /**
+             * compare the main hiringsystem and the back up hiring system.
+             */
             if(command.equalsIgnoreCase("CB")){
-            if(table.equals(app1)){
-                System.out.println("Current list is the same as the backup copy.");
-            }
-            else{
-                System.out.println("Current list is not the same as the backup copy.");
-            }
+                boolean same = false;
+                if(table.size()==backupTable.size()){
+                    for(int i=0; i<table.size(); i++){
+                        if(table.getApplicantname(table)[i].equals(backupTable.getApplicantname(backupTable)[i])){
+                           same = true;
+                        }
+                    }
+                    if(same){
+                        System.out.println("Current list is the same as the backup copy.");
+                    }
+                }
+                else{
+                    System.out.println("Current list is not the same as the backup copy.");
+                }
+            //            if(table.equals(app1)){
+            //                System.out.println("Current list is the same as the backup copy.");
+            //            }
+            //            else{
+            //                System.out.println("Current list is not the same as the backup copy.");
+            //            }
             }
 
+            /**
+             * revert the main hiringsystem and the back up hiring system
+             */
             if(command.equalsIgnoreCase("RB")){
 //                tempTable = table;
 //                table = newTable;
@@ -261,10 +306,19 @@ public class HiringSystem {
 //                        table.addApplicant(app1.getloc(i));
 //                    }
 //                }catch (FullTableException e){}
-                tempTable = table;
-                table=app1;
-                app1 = tempTable;
-                System.out.println("Successfully reverted to backup copy.");
+
+                try{
+                    tempTable = (HiringTable)table.clone();
+                    table = (HiringTable)backupTable.clone();
+                    backupTable = (HiringTable)tempTable.clone();
+                    System.out.println("Successfully reverted to backup copy.");
+                }
+                catch (CloneNotSupportedException e){
+                    System.out.println("Revert Unsuccessful");
+                }
+//                table=app1;
+//                app1 = tempTable;
+//                System.out.println("Successfully reverted to backup copy.");
             }
 
         }
