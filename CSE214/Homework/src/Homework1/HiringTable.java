@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * @author Junjian Zhu R05
- *    e-mail: junjian.zhu@Stonybrook.edu
+ *     e-mail: junjian.zhu@Stonybrook.edu
  *    Stony Brook ID: 111384808
  **/
 
@@ -37,6 +37,20 @@ public class HiringTable implements Cloneable {
     public HiringTable(){}      //empty constructor
 
     public HiringTable(Applicant[] applicants){}
+
+    private boolean equals (HiringTable a, HiringTable b){
+        if(a.size()!=b.size()){
+            return false;
+        }
+        for(int i =0;i<a.size(); i++){
+            if(a.applicants[i].getApplicantName().equals(b.applicants[i].getApplicantName())&&
+                    a.applicants[i].getGPA()==b.applicants[i].getGPA()&&
+                    a.applicants[i].getCollege().equals(b.applicants[i].getCollege())){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * By using a additional variable that add or minus one when we are adding or
@@ -86,7 +100,7 @@ public class HiringTable implements Cloneable {
         }
         return a;
         }
-
+        
     /**
      *Same logic as above, we first find out which applicant is the one that we are about to remove. get the location
      * in the array of this applicant. simply move all the applicant after this location one spot forward will remove
