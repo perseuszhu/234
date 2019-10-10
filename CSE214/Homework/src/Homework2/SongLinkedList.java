@@ -62,7 +62,7 @@ public class SongLinkedList {
         }
         SongNode tempcursor = head;
         Random rand = new Random();
-        int rn = rand.nextInt(size+1);
+        int rn = rand.nextInt(size);
         for(int i=0; i<rn; i++){
             tempcursor = tempcursor.getNext();
         }
